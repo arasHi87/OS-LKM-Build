@@ -13,6 +13,7 @@ static int proc_show(struct seq_file* m, void* v)
     get_version(m);
     get_cpuinfo(m);
     get_meminfo(m);
+    get_time(m);
     return 0;
 }
 
@@ -45,3 +46,4 @@ static void __exit cleanup(void)
 
 module_init(init);
 module_exit(cleanup);
+MODULE_LICENSE("GPL");

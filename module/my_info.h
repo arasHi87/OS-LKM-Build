@@ -3,6 +3,7 @@
 #include <linux/cpufreq.h>
 #include <linux/seq_file.h>
 #include <linux/swap.h>
+#include <linux/time.h>
 
 static void get_version(struct seq_file* m)
 {
@@ -57,5 +58,30 @@ static void get_meminfo(struct seq_file* m)
     seq_printf(m, "Writeback       : %ld KB\n", global_node_page_state(NR_WRITEBACK));
     seq_printf(m, "KernelStack     : %ld KB\n", i.sharedram);
     seq_printf(m, "PageTable       : %ld KB\n",  global_node_page_state(NR_PAGETABLE));
+    seq_puts(m, "\n");
+}
+
+static void get_time(struct seq_file* m)
+{
+    struct timespec64 uptime;
+    struct timespec64 idle;
+    u64 nsec;
+    u32 rem;
+    int i;
+
+    nsec = 0;
+    for_each_possible_cpu(i)
+    nsec += (__force u64) kcpustat_cpu(i).cpustat[CPUTIME_IDLE];
+
+    ktime_get_boottime_ts64(&uptime);
+
+    idle.tv_sec = div_u64_rem(nsec, NSEC_PER_SEC, &rem);
+    idle.tv_nsec = rem;
+
+    seq_puts(m, "==========Time==========\n");
+    seq_printf(m, "Uptime          : %lu.%02lu\n", (unsigned long) uptime.tv_sec,
+               (uptime.tv_nsec / (NSEC_PER_SEC / 100)));
+    seq_printf(m, "Idletime        : %lu.%02lu\n", (unsigned long) idle.tv_sec,
+               (idle.tv_nsec / (NSEC_PER_SEC / 100)));
     seq_puts(m, "\n");
 }
