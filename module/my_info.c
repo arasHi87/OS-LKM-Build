@@ -10,7 +10,6 @@ static struct proc_dir_entry* entry;
 
 static int proc_show(struct seq_file* m, void* v)
 {
-    seq_printf(m, "Do U want to meow with me ?\n");
     get_version(m);
     get_cpuinfo(m);
     return 0;
