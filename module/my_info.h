@@ -8,7 +8,7 @@
 static void get_version(struct seq_file* m)
 {
     seq_puts(m, "==========Version==========\n");
-    seq_printf(m, "Linux version %s\n", UTS_RELEASE);
+    seq_printf(m, "Linux version   : %s\n", UTS_RELEASE);
     seq_puts(m, "\n");
 }
 
