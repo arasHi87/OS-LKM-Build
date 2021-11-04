@@ -12,6 +12,7 @@ static int proc_show(struct seq_file* m, void* v)
 {
     get_version(m);
     get_cpuinfo(m);
+    get_meminfo(m);
     return 0;
 }
 

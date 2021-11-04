@@ -1,6 +1,8 @@
+#include <asm/page.h>
 #include <generated/utsrelease.h>
 #include <linux/cpufreq.h>
 #include <linux/seq_file.h>
+#include <linux/swap.h>
 
 static void get_version(struct seq_file* m)
 {
@@ -30,4 +32,30 @@ static void get_cpuinfo(struct seq_file* m)
                    c->x86_phys_bits, c->x86_virt_bits);
         seq_puts(m, "\n");
     }
+}
+
+static void get_meminfo(struct seq_file* m)
+{
+    struct sysinfo i;
+    int lru;
+    unsigned long pages[NR_LRU_LISTS];
+
+    si_meminfo(&i);
+    for (lru = LRU_BASE; lru < NR_LRU_LISTS; lru++)
+        pages[lru] = global_node_page_state(NR_LRU_BASE + lru);
+
+    seq_puts(m, "==========Memory==========\n");
+    seq_printf(m, "MemTotal        : %ld KB\n", i.totalram);
+    seq_printf(m, "MemFree         : %ld KB\n", i.freeram);
+    seq_printf(m, "Buffers         : %ld KB\n", i.bufferram);
+    seq_printf(m, "Active          : %ld KB\n", pages[LRU_ACTIVE_ANON] +
+               pages[LRU_ACTIVE_FILE]);
+    seq_printf(m, "Inactive        : %ld KB\n", pages[LRU_INACTIVE_ANON] +
+               pages[LRU_INACTIVE_FILE]);
+    seq_printf(m, "Shmem           : %ld KB\n", i.sharedram);
+    seq_printf(m, "Dirty           : %ld KB\n", global_node_page_state(NR_FILE_DIRTY));
+    seq_printf(m, "Writeback       : %ld KB\n", global_node_page_state(NR_WRITEBACK));
+    seq_printf(m, "KernelStack     : %ld KB\n", i.sharedram);
+    seq_printf(m, "PageTable       : %ld KB\n",  global_node_page_state(NR_PAGETABLE));
+    seq_puts(m, "\n");
 }
