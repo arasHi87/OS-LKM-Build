@@ -73,7 +73,7 @@ static void get_time(struct seq_file* m)
     for_each_possible_cpu(i)
     nsec += (__force u64) kcpustat_cpu(i).cpustat[CPUTIME_IDLE];
 
-    ktime_get_boottime_ts64(&uptime);
+    uptime = ktime_to_timespec64(ktime_get_boottime());
 
     idle.tv_sec = div_u64_rem(nsec, NSEC_PER_SEC, &rem);
     idle.tv_nsec = rem;
