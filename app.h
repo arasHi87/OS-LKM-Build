@@ -34,12 +34,9 @@ Info* get_info()
 
     while (fgets(line, 1024, file))
     {
-        if (line[0] != '\n')
-        {
-            if (line[0] == '=')
-                idx = get_idx(line[10]);
-            strcat(my_info->data[idx], line);
-        }
+        if (line[0] == '=')
+            idx = get_idx(line[10]);
+        strcat(my_info->data[idx], line);
     }
 
     return my_info;

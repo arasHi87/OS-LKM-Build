@@ -14,7 +14,7 @@ int main()
 
         if (ch == 'a')
             for (int i = 0; i <= 3; i++)
-                printf("%s\n", my_info->data[i]);
+                printf("%s", my_info->data[i]);
         else if (ch == 'e')
             exit(0);
         else if (ch == 'v' || ch == 'c' || ch == 'm' || ch == 't')
