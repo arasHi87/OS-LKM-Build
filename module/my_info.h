@@ -79,9 +79,9 @@ static void get_time(struct seq_file* m)
     idle.tv_nsec = rem;
 
     seq_puts(m, "==========Time==========\n");
-    seq_printf(m, "Uptime          : %lu.%02lu\n", (unsigned long) uptime.tv_sec,
+    seq_printf(m, "Uptime          : %lu.%02lu (s)\n", (unsigned long) uptime.tv_sec,
                (uptime.tv_nsec / (NSEC_PER_SEC / 100)));
-    seq_printf(m, "Idletime        : %lu.%02lu\n", (unsigned long) idle.tv_sec,
+    seq_printf(m, "Idletime        : %lu.%02lu (s)\n", (unsigned long) idle.tv_sec,
                (idle.tv_nsec / (NSEC_PER_SEC / 100)));
     seq_puts(m, "\n");
 }
