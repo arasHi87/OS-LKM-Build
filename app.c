@@ -5,9 +5,9 @@ char ch;
 
 int main()
 {
-    Info* my_info = get_info();
     while (1)
     {
+        Info* my_info = get_info();
         puts("Which information do you want?");
         puts("Version(v), CPU(c), Memory(m), Time(t), All(a), Exit(e)");
         scanf("%c", &ch), getchar();
